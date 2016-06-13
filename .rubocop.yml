@@ -1,0 +1,43 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - !ruby/regexp /(vendor|bundle|bin|db|tmp)\/.*/
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+
+Rails:
+  Enabled: true
+
+Style/WordArray:
+  Exclude:
+    - 'app/forms/*_form.rb'
+    - 'test/fabricators/extension_package_fabricator.rb'
+
+Style/RegexpLiteral:
+  AllowInnerSlashes: true
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'lib/tasks/populate.rake'
+
+Metrics/LineLength:
+  Exclude:
+    - 'test/**/*.rb'
+    - 'Gemfile*'
+
+Style/IndentArray:
+  EnforcedStyle: consistent
+
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
