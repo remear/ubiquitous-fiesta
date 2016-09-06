@@ -62,7 +62,7 @@ module Confidence
       response
     end
 
-    def post(endpoint, body, opts = {})
+    def post(endpoint, body = nil, opts = {})
       request(:post, endpoint, opts.merge!(body: body))
     end
 
