@@ -40,6 +40,10 @@ module Confidence
       url = endpoint =~ /https?:\/\// ? endpoint : "#{@root_url}#{endpoint}"
     end
 
+    def refine_endpoint(ep)
+      ep =~ /^\/\S*\/:\S*_id$/ ? ep.sub(/:(\S*_)id/, ':id') : ep
+    end
+
     def request(verb, endpoint, opts = {})
       raise 'HTTP Verb must be a symbol' unless verb.is_a? Symbol
       multipart = opts[:multipart]
@@ -55,9 +59,11 @@ module Confidence
       responses << response
       extracer.log_request(
         verb.to_s.upcase,
-        endpoint,
+        refine_endpoint(endpoint),
         options.fetch(:body, nil),
-        last_body
+        last_body,
+        response.code,
+        response.message
       ) if last_code < 400
       response
     end

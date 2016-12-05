@@ -2,12 +2,13 @@
 module Confidence
   class Extracer
     def initialize
-      @requests = []
+      @scenarios = Array.new
       @resources_create = Hash.new([])
       @resources_update = Hash.new([])
     end
 
-    def log_request(method, endpoint, request, response)
+    def log_request(method, endpoint, request, response, response_code,
+                    response_message)
       if request.is_a? String
         begin
           request = JSON.parse(request)
@@ -16,17 +17,16 @@ module Confidence
           return
         end
       end
-      req = {
+      scenario = {
         method: method,
         endpoint: endpoint,
-        request: (request || {}),
-        response: (response || {})
+        request: request,
+        response: response,
+        response_code: response_code,
+        response_message: response_message
       }
-      @requests << req
-      unless response
-        # likely a 204 with a delete request
-        return
-      end
+      @scenarios << scenario
+      return unless response
       # TODO: make these extract from arrays when those are being used
       if endpoint.start_with?(Confidence.configuration.root_url)
         endpoint = endpoint[Confidence.configuration.root_url.length..-1]
@@ -35,11 +35,11 @@ module Confidence
         # the path is either /[resource_name] or /[some_other_resource]/[guid]/[resource_name]
         # and the resource is getting created
         resource = endpoint.split('/').last
-        @resources_create[resource] += [req]
+        @resources_create[resource] += [scenario]
       elsif method == 'PATCH'
         # the path will be /[resource_name]/[guid]
         resource = endpoint.split('/')[1]
-        @resources_update[resource] += [req]
+        @resources_update[resource] += [scenario]
       end
       # 'GET' & 'DELETE' requests are ignored, and 'PUT' can be similar to a 'PATCH' in updating
     end
@@ -48,9 +48,10 @@ module Confidence
       file = File.join('specification.json')
       json = {
         endpoints: load_endpoints,
-        requests: @requests,
+        scenarios: @scenarios,
         resources_create: @resources_create,
         resources_update: @resources_update,
+        forms: load_forms,
         schemas: load_schemas
       }
       File.open(file, 'w') { |f| f.write(JSON.pretty_generate(json)) }
@@ -89,9 +90,11 @@ module Confidence
     end
 
     def load_endpoints
-      file = File.join('fixtures', 'endpoints.json')
-      endpoints = JSON.parse(File.read(file))
-      endpoints
+      JSON.parse(File.read('endpoints.json'))
+    end
+
+    def load_forms
+      JSON.parse(File.read('forms.json'))
     end
   end
 end

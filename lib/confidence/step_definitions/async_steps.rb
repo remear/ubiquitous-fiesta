@@ -14,7 +14,7 @@ def await_resource_processing(href, comperator, watched_attribute, desired_value
     if current_value.method(comperator).call(desired_value)
       pending = false
     else
-      sleep 2
+      sleep 5
     end
     attempts += 1
   end while pending && (attempts < max_attempts)
