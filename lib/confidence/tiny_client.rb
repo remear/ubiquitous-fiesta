@@ -76,7 +76,7 @@ module Confidence
     end
 
     def patch(endpoint, body, opts = {})
-      request(:put, endpoint, opts.merge!(body: body))
+      request(:patch, endpoint, opts.merge!(body: body))
     end
 
     def get(endpoint)
