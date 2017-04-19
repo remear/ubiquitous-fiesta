@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'cucumber', '~> 2.4.0'
   spec.add_dependency 'httmultiparty', '~> 0.3.16'
-  spec.add_dependency 'json-schema', '~> 2.6.2'
+  spec.add_dependency 'json-schema', '~> 2.6'
   spec.add_dependency 'test-unit'
   spec.add_dependency 'rake', '~> 10.0'
 
