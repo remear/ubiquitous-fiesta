@@ -9,7 +9,7 @@
 # Offense count: 1
 Lint/AmbiguousRegexpLiteral:
   Exclude:
-    - 'lib/compliance/step_definitions/http_steps.rb'
+    - 'lib/confidence/step_definitions/http_steps.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -21,12 +21,12 @@ Lint/EndAlignment:
 # Offense count: 1
 Lint/Loop:
   Exclude:
-    - 'lib/compliance/step_definitions/async_steps.rb'
+    - 'lib/confidence/step_definitions/async_steps.rb'
 
 # Offense count: 3
 Lint/UselessAssignment:
   Exclude:
-    - 'lib/compliance/tiny_client.rb'
+    - 'lib/confidence/tiny_client.rb'
 
 # Offense count: 5
 Metrics/AbcSize:
