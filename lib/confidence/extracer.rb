@@ -18,8 +18,9 @@ module Confidence
         end
       end
       scenario = {
-        method: method,
+        name: scenario_name,
         endpoint: endpoint,
+        method: method,
         request: request,
         response: response,
         response_code: response_code,
@@ -58,6 +59,12 @@ module Confidence
     end
 
     private
+
+    def scenario_name
+      scenario = Confidence.client.current_scenario
+      [scenario.feature.name.parameterize.underscore,
+       scenario.name.parameterize.underscore].join('.')
+    end
 
     def resolve_refs(json, path)
       if json.is_a? Hash

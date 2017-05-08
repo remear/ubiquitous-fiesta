@@ -14,7 +14,11 @@ end
 
 Before do |scenario|
   Confidence.client.clear_storage
-  Confidence.client.running = scenario
+  Confidence.client.current_scenario = scenario
+end
+
+Before('@cleanroom') do
+  Confidence.client.clear_storage
 end
 
 at_exit do

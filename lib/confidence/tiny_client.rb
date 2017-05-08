@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 module Confidence
   class TinyClient
-    attr_accessor :headers
+    attr_accessor :headers, :current_scenario
     attr_reader :extracer, :responses, :storage
-    attr_writer :running
 
     def initialize(extracer)
       @extracer = extracer
@@ -14,7 +13,7 @@ module Confidence
     end
 
     def clear_storage
-      storage = {}
+      @storage = {}
     end
 
     def build_options(opts)
