@@ -73,7 +73,10 @@ module Confidence
 
     def post_multipart(endpoint, file, field, _body, opts = {})
       file_name = File.join('fixtures', 'files', file)
-      request(:post, endpoint, opts.merge!(multipart: true, file: File.new(file_name), field: field))
+      options = opts.merge!(multipart: true,
+                            file: File.new(file_name),
+                            field: field)
+      request(:post, endpoint, options)
     end
 
     def put(endpoint, body, opts = {})
@@ -88,8 +91,8 @@ module Confidence
       request(:get, endpoint)
     end
 
-    def delete(endpoint)
-      request(:delete, endpoint)
+    def delete(endpoint, body = nil, opts = {})
+      request(:delete, endpoint, body ? opts.merge!(body: body) : opts)
     end
 
     def add_response(response)
