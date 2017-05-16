@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    confidence (0.0.1)
+    specr (0.0.1)
       cucumber (~> 2.4.0)
       httmultiparty (~> 0.3.16)
       json-schema (~> 2.6)
@@ -75,9 +75,9 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.10)
-  confidence!
   pry-byebug
   rubocop (~> 0.40.0)
+  specr!
 
 BUNDLED WITH
    1.12.5

@@ -1,3 +1,4 @@
 scenarios.json
 *.iml
 api_spec.json
+pkg/
