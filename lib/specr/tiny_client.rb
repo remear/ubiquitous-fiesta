@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-module Confidence
+module Specr
   class TinyClient
     attr_accessor :headers, :current_scenario
     attr_reader :extracer, :responses, :storage
 
     def initialize(extracer)
       @extracer = extracer
-      @root_url = Confidence.configuration.root_url
-      @headers = Confidence.configuration.default_headers
+      @root_url = Specr.configuration.root_url
+      @headers = Specr.configuration.default_headers
       @responses = []
       @storage = {}
     end
@@ -48,13 +48,13 @@ module Confidence
       multipart = opts[:multipart]
       url = build_url(endpoint)
       options = build_options(opts)
-      Confidence.logger.debug(options)
+      Specr.logger.debug(options)
       response = if multipart
                    HTTMultiParty.post(url, options)
                  else
                    HTTParty.send(verb, url, options)
                  end
-      Confidence.logger.debug(response)
+      Specr.logger.debug(response)
       responses << response
       extracer.log_request(
         verb.to_s.upcase,

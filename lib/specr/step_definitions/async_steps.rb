@@ -9,8 +9,8 @@ def await_resource_processing(href, comperator, watched_attribute, desired_value
   pending = true
   response = nil
   begin
-    response = JSON.parse(Confidence.client.get(href))
-    current_value = Confidence.client.get_link(watched_attribute)
+    response = JSON.parse(Specr.client.get(href))
+    current_value = Specr.client.get_link(watched_attribute)
     if current_value.method(comperator).call(desired_value)
       pending = false
     else

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module Confidence
+module Specr
   class Extracer
     def initialize
       @scenarios = Array.new
@@ -29,8 +29,8 @@ module Confidence
       @scenarios << scenario
       return unless response
       # TODO: make these extract from arrays when those are being used
-      if endpoint.start_with?(Confidence.configuration.root_url)
-        endpoint = endpoint[Confidence.configuration.root_url.length..-1]
+      if endpoint.start_with?(Specr.configuration.root_url)
+        endpoint = endpoint[Specr.configuration.root_url.length..-1]
       end
       if method == 'POST'
         # the path is either /[resource_name] or /[some_other_resource]/[guid]/[resource_name]
@@ -61,7 +61,7 @@ module Confidence
     private
 
     def scenario_name
-      scenario = Confidence.client.current_scenario
+      scenario = Specr.client.current_scenario
       [scenario.feature.name.parameterize.underscore,
        scenario.name.parameterize.underscore].join('.')
     end

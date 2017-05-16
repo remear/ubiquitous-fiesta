@@ -3,19 +3,19 @@ require 'httmultiparty'
 require 'json'
 require 'json-schema'
 
-require 'confidence/version'
-require 'confidence/extracer'
-require 'confidence/tiny_client'
-require 'confidence/step_definitions/async_steps'
-require 'confidence/step_definitions/debugging_steps'
-require 'confidence/step_definitions/http_steps'
-require 'confidence/step_definitions/jsonapi_steps'
-require 'confidence/step_definitions/validation_steps'
-require 'confidence/step_definitions/jsonapi_validation_steps'
+require 'specr/version'
+require 'specr/extracer'
+require 'specr/tiny_client'
+require 'specr/step_definitions/async_steps'
+require 'specr/step_definitions/debugging_steps'
+require 'specr/step_definitions/http_steps'
+require 'specr/step_definitions/jsonapi_steps'
+require 'specr/step_definitions/validation_steps'
+require 'specr/step_definitions/jsonapi_validation_steps'
 
-require 'confidence/features/support/initial_setup'
+require 'specr/features/support/initial_setup'
 
-module Confidence
+module Specr
   class << self
     attr_accessor :configuration, :client, :logger
   end

@@ -16,12 +16,12 @@ def checker(from, of, nesting)
 end
 
 Then(/^the fields match:$/) do |against|
-  checker JSON.parse(Confidence.client.hydrater(against)), Confidence.client['data'], ''
+  checker JSON.parse(Specr.client.hydrater(against)), Specr.client['data'], ''
 end
 
 Then(/^the fields match:$/) do |against|
-  against = JSON.parse(Confidence.client.hydrater(against))
-  Confidence.client.last_body[resource].each do |body|
+  against = JSON.parse(Specr.client.hydrater(against))
+  Specr.client.last_body[resource].each do |body|
     checker against, body, ''
   end
 end

@@ -2,17 +2,17 @@
 # frozen_string_literal: true
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'confidence/version'
+require 'specr/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'confidence'
-  spec.version       = Confidence::VERSION
+  spec.name          = 'specr'
+  spec.version       = Specr::VERSION
   spec.authors       = ['Ben Mills']
   spec.email         = ['ben@unfiniti.com']
 
   spec.summary       = 'A toolkit to assist in validating APIs.'
   spec.description   = 'A toolkit to assist in validating APIs.'
-  spec.homepage      = 'http://github.com/remear/confidence'
+  spec.homepage      = 'http://github.com/remear/specr'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'

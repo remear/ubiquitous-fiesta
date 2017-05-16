@@ -1,4 +1,4 @@
-# Confidence
+# Specr
 
 A toolkit to assist in validating APIs.
 
@@ -7,7 +7,7 @@ A toolkit to assist in validating APIs.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'confidence'
+gem 'specr'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install confidence
+    $ gem install specr
 
 ## Usage
 
@@ -24,5 +24,5 @@ TODO: Write usage instructions here
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/remear/confidence.
+Bug reports and pull requests are welcome on GitHub at https://github.com/remear/specr.
 
