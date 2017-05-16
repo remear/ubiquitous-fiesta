@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Ben Mills']
   spec.email         = ['ben@unfiniti.com']
 
-  spec.summary       = 'A toolkit to assist in validating APIs.'
-  spec.description   = 'A toolkit to assist in validating APIs.'
+  spec.summary       = 'A toolkit for building API specifications.'
+  spec.description   = 'A toolkit for building API specifications.'
   spec.homepage      = 'http://github.com/remear/specr'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
