@@ -50,7 +50,7 @@ module Specr
       options = build_options(opts)
       Specr.logger.debug(options)
       response = if multipart
-                   HTTMultiParty.post(url, options)
+                   HTTMultiParty.send(verb, url, options)
                  else
                    HTTParty.send(verb, url, options)
                  end
@@ -77,6 +77,14 @@ module Specr
                             file: File.new(file_name),
                             field: field)
       request(:post, endpoint, options)
+    end
+
+    def patch_multipart(endpoint, file, field, _body, opts = {})
+      file_name = File.join('fixtures', 'files', file)
+      options = opts.merge!(multipart: true,
+                            file: File.new(file_name),
+                            field: field)
+      request(:patch, endpoint, options)
     end
 
     def put(endpoint, body, opts = {})
