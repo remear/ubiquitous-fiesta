@@ -98,20 +98,25 @@ module Specr
       ret
     end
 
+    def api_spec_file(leafname)
+      base_dir = ENV['REACTOR_BASE_DIR'] || './..'
+      File.join(base_dir, 'blacksmith', 'api_spec', leafname)
+    end
+
     def load_endpoints
-      JSON.parse(File.read('endpoints.json'))
+      JSON.parse(File.read(api_spec_file('endpoints.json')))
     end
 
     def load_forms
-      JSON.parse(File.read('forms.json'))
+      JSON.parse(File.read(api_spec_file('forms.json')))
     end
 
     def load_error_codes
-      JSON.parse(File.read('error_codes.json'))
+      JSON.parse(File.read(api_spec_file('error_codes.json')))
     end
 
     def load_filterable_attributes
-      JSON.parse(File.read('filterable_attributes.json'))
+      JSON.parse(File.read(api_spec_file('filterable_attributes.json')))
     end
   end
 end
