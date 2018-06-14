@@ -53,6 +53,7 @@ module Specr
         resources_create: @resources_create,
         resources_update: @resources_update,
         forms: load_forms,
+        errors: load_error_codes,
         filterable_attributes: load_filterable_attributes,
         schemas: load_schemas
       }
@@ -103,6 +104,10 @@ module Specr
 
     def load_forms
       JSON.parse(File.read('forms.json'))
+    end
+
+    def load_error_codes
+      JSON.parse(File.read('error_codes.json'))
     end
 
     def load_filterable_attributes
