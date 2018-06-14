@@ -54,6 +54,7 @@ module Specr
         resources_update: @resources_update,
         forms: load_forms,
         errors: load_error_codes,
+        filterable_attributes: load_filterable_attributes,
         schemas: load_schemas
       }
       File.open(file, 'w') { |f| f.write(JSON.pretty_generate(json)) }
@@ -107,6 +108,10 @@ module Specr
 
     def load_error_codes
       JSON.parse(File.read('error_codes.json'))
+    end
+
+    def load_filterable_attributes
+      JSON.parse(File.read('filters.json'))
     end
   end
 end
