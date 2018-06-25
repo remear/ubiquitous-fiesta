@@ -5,7 +5,7 @@ end
 
 def await_resource_processing(href, comperator, watched_attribute, desired_value)
   attempts = 0
-  max_attempts = 5
+  max_attempts = ENV['SPECR_MAX_AWAIT_RETRIES'].to_i || 5
   pending = true
   response = nil
   begin
@@ -14,7 +14,7 @@ def await_resource_processing(href, comperator, watched_attribute, desired_value
     if current_value.method(comperator).call(desired_value)
       pending = false
     else
-      sleep 5
+      sleep ENV['SPECR_AWAIT_SLEEP'].to_i || 5
     end
     attempts += 1
   end while pending && (attempts < max_attempts)
