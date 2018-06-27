@@ -5,7 +5,7 @@ end
 
 def await_resource_processing(href, comperator, watched_attribute, desired_value)
   attempts = 0
-  max_attempts = ENV['SPECR_MAX_AWAIT_RETRIES'].to_i || 5
+  max_attempts = ENV.fetch('SPECR_MAX_AWAIT_RETRIES', 10).to_i
   pending = true
   response = nil
   begin
@@ -14,10 +14,11 @@ def await_resource_processing(href, comperator, watched_attribute, desired_value
     if current_value.method(comperator).call(desired_value)
       pending = false
     else
-      sleep ENV['SPECR_AWAIT_SLEEP'].to_i || 5
+      Specr.logger.debug "Retrying..."
+      sleep ENV.fetch('SPECR_AWAIT_SLEEP', 5).to_i
     end
     attempts += 1
   end while pending && (attempts < max_attempts)
-  raise ArgumentError, 'Timed out waiting for resource processing!' if pending == true
+  raise RuntimeError, 'Timed out waiting for resource processing!' if pending == true
   response
 end
