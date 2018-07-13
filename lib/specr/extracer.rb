@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 module Specr
   class Extracer
+
+    API_SPEC_FILE_NAME = ENV['API_SPEC_FILE_NAME'] || 'specification.json'
+
     def initialize
       @scenarios = Array.new
       @resources_create = Hash.new([])
       @resources_update = Hash.new([])
     end
 
-    def log_request(method, endpoint, request, response, response_code,
-                    response_message)
-      if request.is_a? String
+    def log_request(opts = {})
+      if opts[:request_body].is_a? String
         begin
-          request = JSON.parse(request)
+          request = JSON.parse(opts[:request_body])
         rescue
           # WHAT ARE WE EVEN GETTING
           return
@@ -19,17 +21,17 @@ module Specr
       end
       scenario = {
         name: scenario_name,
-        endpoint: endpoint,
-        method: method,
-        request: request,
-        response: response,
-        response_code: response_code,
-        response_message: response_message
+        endpoint: opts.fetch(:endpoint),
+        method: opts.fetch(:verb),
+        request: opts.fetch(:request_body),
+        response: opts.fetch(:response_body),
+        response_code: opts.fetch(:response_code),
+        response_message: opts.fetch(:response_message)
       }
       @scenarios << scenario
-      return unless response
+      return unless scenario[:response_body]
       # TODO: make these extract from arrays when those are being used
-      if endpoint.start_with?(Specr.configuration.root_url)
+      if scenario[:endpoint].start_with?(Specr.configuration.root_url)
         endpoint = endpoint[Specr.configuration.root_url.length..-1]
       end
       if method == 'POST'
@@ -46,7 +48,7 @@ module Specr
     end
 
     def save
-      file = File.join('specification.json')
+      file = File.join(API_SPEC_FILE_NAME)
       json = {
         endpoints: load_endpoints,
         scenarios: @scenarios,
@@ -117,6 +119,14 @@ module Specr
 
     def load_filterable_attributes
       JSON.parse(File.read(api_spec_file('filterable_attributes.json')))
+    end
+
+    def load_error_codes
+      JSON.parse(File.read('error_codes.json'))
+    end
+
+    def load_filterable_attributes
+      JSON.parse(File.read('filters.json'))
     end
   end
 end

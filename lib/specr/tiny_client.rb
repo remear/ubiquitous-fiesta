@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'pp'
+
 module Specr
   class TinyClient
     attr_accessor :headers, :current_scenario
@@ -48,22 +50,28 @@ module Specr
       multipart = opts[:multipart]
       url = build_url(endpoint)
       options = build_options(opts)
-      Specr.logger.debug(options)
+
+      request_info = {
+        verb: verb.to_s.upcase,
+        url: url,
+        endpoint: refine_endpoint(endpoint),
+        request_body: options.fetch(:body, nil)
+      }
+      Specr.logger.debug("REQUEST_INFO:\n#{request_info.pretty_inspect}")
+
       response = if multipart
                    HTTMultiParty.post(url, options)
                  else
                    HTTParty.send(verb, url, options)
                  end
-      Specr.logger.debug(response)
       responses << response
-      extracer.log_request(
-        verb.to_s.upcase,
-        refine_endpoint(endpoint),
-        options.fetch(:body, nil),
-        last_body,
-        response.code,
-        response.message
-      ) if last_code < 400
+      response_info = {
+        response_body: last_body,
+        response_code: response.code,
+        response_message: response.message
+      }
+      Specr.logger.debug("RESPONSE_INFO:\n#{response_info.pretty_inspect}")
+      extracer.log_request(**request_info, **response_info) if last_code < 400
       response
     end
 

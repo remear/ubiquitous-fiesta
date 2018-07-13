@@ -1,27 +1,35 @@
 # frozen_string_literal: true
 # TODO: move to a validator
-def checker(from, of, nesting)
-  assert_not_nil from, nesting
-  from.each_pair do |key, val|
-    if val.is_a?(String) || val.is_a?(Integer) || val.is_a?(TrueClass) || val.is_a?(FalseClass)
-      assert_equal val, of[key], "#{nesting}>#{key}"
-    elsif val.nil?
-      assert_nil of[key]
-    elsif of.is_a?(Array)
-      checker val, of[0][key], "#{nesting}>#{key}"
-    else
-      checker val, of[key], "#{nesting}>#{key}"
+def checker(expected, actual, nesting)
+  case expected
+  when String, Integer, TrueClass, FalseClass
+    assert_equal expected, actual, nesting
+  when NilClass
+    assert_nil actual, nesting
+  when Hash
+    expected.each_pair do |key, val|
+      checker val, actual[key], "#{nesting}>#{key}"
     end
+  when Array
+    assert actual.is_a?(Array), nesting
+    assert_empty(actual, nesting) if expected.empty?
+    expected.each_with_index do |val, index|
+      assert_includes actual, val, "#{nesting}>#{index}"
+    end
+  else
+    flunk "different types (#{expected.class} and #{actual.class}) at #{nesting}"
   end
 end
 
-Then(/^the fields match:$/) do |against|
-  checker JSON.parse(Specr.client.hydrater(against)), Specr.client['data'], ''
+Then(/^the response (?:matches|contains):$/) do |expected|
+  checker JSON.parse(Specr.client.hydrater(expected)), Specr.client.last_body, ''
 end
 
-Then(/^the fields match:$/) do |against|
-  against = JSON.parse(Specr.client.hydrater(against))
-  Specr.client.last_body[resource].each do |body|
-    checker against, body, ''
+Given(/^the response (\S+) collection does not contain:$/) do |path, unexpected_json|
+  parts = path.split('.')
+  unexpected = JSON.parse(Specr.client.hydrater(unexpected_json))
+  actual = Specr.client.last_body.dig(*parts)
+  unexpected.each do |i|
+    refute_includes actual, i
   end
 end
