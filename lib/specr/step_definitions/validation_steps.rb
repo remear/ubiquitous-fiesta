@@ -14,10 +14,33 @@ def checker(expected, actual, nesting)
     assert actual.is_a?(Array), nesting
     assert_empty(actual, nesting) if expected.empty?
     expected.each_with_index do |val, index|
-      assert_includes actual, val, "#{nesting}>#{index}"
+      assert includes_match(actual, val), "#{nesting}>#{index}"
     end
   else
     flunk "different types (#{expected.class} and #{actual.class}) at #{nesting}"
+  end
+end
+
+def includes_match(list, sought)
+  list.any? { |list_element| matches(sought, list_element) }
+end
+
+def matches(expected, actual)
+  case expected
+  when String, Integer, TrueClass, FalseClass
+    expected == actual
+  when NilClass
+    actual.nil?
+  when Hash
+    expected.all? do |key, val|
+      matches val, actual[key]
+    end
+  when Array
+    actual.is_a?(Array) && expected.all? do |expected_element|
+      includes_match(actual, expected_element)
+    end
+  else
+    false
   end
 end
 
