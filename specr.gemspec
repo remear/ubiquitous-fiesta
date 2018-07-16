@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'A toolkit for building API specifications.'
   spec.description   = 'A toolkit for building API specifications.'
-  spec.homepage      = 'http://github.com/perlmonger42/specr'
+  spec.homepage      = 'http://github.com/remear/specr'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
