@@ -23,7 +23,7 @@ module Specr
         name: scenario_name,
         endpoint: opts.fetch(:endpoint),
         method: opts.fetch(:verb),
-        request: opts.fetch(:request_body),
+        request: request,
         response: opts.fetch(:response_body),
         response_code: opts.fetch(:response_code),
         response_message: opts.fetch(:response_message)
