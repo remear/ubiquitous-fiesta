@@ -3,7 +3,7 @@ require 'pp'
 
 module Specr
   class TinyClient
-    attr_accessor :headers, :current_scenario
+    attr_accessor :headers, :current_scenario, :record_even_on_error
     attr_reader :extracer, :responses, :storage
 
     def initialize(extracer)
@@ -12,6 +12,7 @@ module Specr
       @headers = Specr.configuration.default_headers
       @responses = []
       @storage = {}
+      @record_even_on_error = false
     end
 
     def clear_storage
@@ -68,11 +69,17 @@ module Specr
       response_info = {
         response_body: last_body,
         response_code: response.code,
+        response_html: last_html,
         response_message: response.message
       }
+      response_info.delete(:response_html) unless response_info[:response_html]
       Specr.logger.debug("RESPONSE_INFO:\n#{response_info.pretty_inspect}")
-      extracer.log_request(**request_info, **response_info) if last_code < 400
+      if  last_code < 400 || @record_even_on_error
+        extracer.log_request(**request_info, **response_info)
+      end
       response
+    ensure
+      @record_even_on_error = false
     end
 
     def post(endpoint, body = nil, opts = {})
@@ -111,8 +118,15 @@ module Specr
       responses.last.code
     end
 
+    def last_html
+      response = responses.last
+      response.body if response.headers['content-type'] == 'text/html'
+    end
+
     def last_body
       JSON.parse(responses.last.body) if responses.last.body
+    rescue JSON::ParserError
+      {}
     end
 
     def get_link(keys)

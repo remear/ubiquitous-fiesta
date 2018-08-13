@@ -45,3 +45,7 @@ end
 Then(/^there should be no response body$/) do
   assert_nil Specr.client.last_body
 end
+
+Then(/^I expect an error$/) do
+  Specr.client.record_even_on_error = true
+end

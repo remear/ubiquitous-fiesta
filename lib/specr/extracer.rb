@@ -26,8 +26,10 @@ module Specr
         request: request,
         response: opts.fetch(:response_body),
         response_code: opts.fetch(:response_code),
+        response_html: opts[:response_html],
         response_message: opts.fetch(:response_message)
       }
+      scenario.delete(:response_html) unless scenario[:response_html]
       @scenarios << scenario
       return unless scenario[:response_body]
       # TODO: make these extract from arrays when those are being used
