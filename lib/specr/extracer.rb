@@ -66,8 +66,8 @@ module Specr
 
     def scenario_name
       scenario = Specr.client.current_scenario
-      [scenario.feature.name.parameterize.underscore,
-       scenario.name.parameterize.underscore].join('.')
+      [scenario.feature.name.underscore.parameterize(separator: '_'),
+       scenario.name.underscore.parameterize(separator: '_')].join('.')
     end
 
     def resolve_refs(json, path)
