@@ -4,7 +4,7 @@ require 'pp'
 module Specr
   class TinyClient
     attr_accessor :headers, :current_scenario
-    attr_reader :extracer, :responses, :storage
+    attr_reader :extracer, :responses, :storage, :storage_global
 
     def initialize(extracer)
       @extracer = extracer
@@ -12,9 +12,11 @@ module Specr
       @headers = Specr.configuration.default_headers
       @responses = []
       @storage = {}
+      @storage_global = {}
     end
 
-    def clear_storage
+    def clear_storage(global=false)
+      @storage_global = {} if global
       @storage = {}
     end
 
