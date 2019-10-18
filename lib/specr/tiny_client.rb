@@ -95,8 +95,8 @@ module Specr
       request(:patch, endpoint, opts.merge!(body: body))
     end
 
-    def get(endpoint)
-      request(:get, endpoint)
+    def get(endpoint, body = nil, opts = {})
+      request(:get, endpoint, opts.merge!(body: body))
     end
 
     def delete(endpoint, body = nil, opts = {})
