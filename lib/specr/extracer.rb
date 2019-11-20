@@ -24,7 +24,7 @@ module Specr
         endpoint: opts.fetch(:endpoint),
         method: opts.fetch(:verb),
         request: request,
-        response: opts.fetch(:response_body),
+        response: condensed_response_body_results(opts.fetch(:response_body)),
         response_code: opts.fetch(:response_code),
         response_message: opts.fetch(:response_message)
       }
@@ -88,6 +88,14 @@ module Specr
       else
         json
       end
+    end
+
+    def condensed_response_body_results(body)
+      return unless body
+      return body unless body['data']
+
+      body['data'].slice!(2..-1) if body['data'].size > 2
+      body
     end
 
     def load_schemas
