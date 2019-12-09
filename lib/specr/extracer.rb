@@ -91,10 +91,10 @@ module Specr
     end
 
     def condensed_response_body_results(body)
-      return unless body
-      return body unless body['data']
+      return body unless body&.dig('data').is_a?(Array)
+      return body unless body['data'].size > 2
 
-      body['data'].slice!(2..-1) if body['data'].size > 2
+      body['data'].slice!(0..1)
       body
     end
 
