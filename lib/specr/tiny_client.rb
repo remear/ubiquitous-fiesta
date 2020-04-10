@@ -60,7 +60,7 @@ module Specr
       Specr.logger.debug("REQUEST_INFO:\n#{request_info.pretty_inspect}")
 
       response = if multipart
-                   HTTMultiParty.post(url, options)
+                   HTTMultiParty.send(verb, url, options)
                  else
                    HTTParty.send(verb, url, options)
                  end
@@ -80,11 +80,11 @@ module Specr
     end
 
     def post_multipart(endpoint, file, field, _body, opts = {})
-      file_name = File.join('fixtures', 'files', file)
-      options = opts.merge!(multipart: true,
-                            file: File.new(file_name),
-                            field: field)
-      request(:post, endpoint, options)
+      multipart_for(:post, endpoint, file, field, _body, opts)
+    end
+
+    def patch_multipart(endpoint, file, field, _body, opts = {})
+      multipart_for(:patch, endpoint, file, field, _body, opts)
     end
 
     def put(endpoint, body, opts = {})
@@ -143,6 +143,16 @@ module Specr
       else
         last_body.select { |x| x != 'links' && x != 'meta' }.values.first[name]
       end
+    end
+
+    private
+
+    def multipart_for(verb, endpoint, file, field, _body, opts)
+      file_name = File.join('fixtures', 'files', file)
+      options = opts.merge!(multipart: true,
+                            file: File.new(file_name),
+                            field: field)
+      request(verb, endpoint, options)
     end
   end
 end
