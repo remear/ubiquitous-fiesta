@@ -9,7 +9,7 @@ def await_resource_processing(href, comperator, watched_attribute, desired_value
   pending = true
   response = nil
   begin
-    response = JSON.parse(Specr.client.get(href))
+    response = JSON.parse(Specr.client.get(href).to_s)
     current_value = Specr.client.get_link(watched_attribute)
     if current_value.method(comperator).call(desired_value)
       pending = false
