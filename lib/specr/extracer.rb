@@ -11,14 +11,7 @@ module Specr
     end
 
     def log_request(opts = {})
-      if opts[:request_body].is_a? String
-        begin
-          request = JSON.parse(opts[:request_body])
-        rescue
-          # WHAT ARE WE EVEN GETTING
-          return
-        end
-      end
+      request = process_request(opts[:request_body])
       scenario = {
         name: scenario_name,
         endpoint: opts.fetch(:endpoint),
@@ -63,6 +56,20 @@ module Specr
     end
 
     private
+
+    def process_request(request_body)
+      return JSON.parse(request_body) if request_body.is_a? String
+
+      process_hash_request(request_body) if request_body.is_a? Hash
+    rescue JSON::ParserError
+      nil
+    end
+
+    def process_hash_request(request_hash)
+      request_hash.each do |key, value|
+        request_hash[key] = value.is_a?(File) ? "@[#{key.upcase}_PATH]" : nil
+      end.compact
+    end
 
     def scenario_name
       scenario = Specr.client.current_scenario
