@@ -5,7 +5,7 @@ PATH
       cucumber (~> 2.4.0)
       httparty (~> 0.18.0)
       json-schema (~> 2.6)
-      rake (~> 10.0)
+      rake (>= 10, < 14)
       test-unit
 
 GEM
@@ -55,7 +55,7 @@ GEM
       pry (~> 0.10)
     public_suffix (4.0.4)
     rainbow (2.1.0)
-    rake (10.5.0)
+    rake (13.0.1)
     rubocop (0.40.0)
       parser (>= 2.3.1.0, < 3.0)
       powerpack (~> 0.1)
