@@ -47,7 +47,6 @@ module Specr
 
     def request(verb, endpoint, opts = {})
       raise 'HTTP Verb must be a symbol' unless verb.is_a? Symbol
-      multipart = opts[:multipart]
       url = build_url(endpoint)
       options = build_options(opts)
 
@@ -59,11 +58,7 @@ module Specr
       }
       Specr.logger.debug("REQUEST_INFO:\n#{request_info.pretty_inspect}")
 
-      response = if multipart
-                   HTTMultiParty.post(url, options)
-                 else
-                   HTTParty.send(verb, url, options)
-                 end
+      response = HTTParty.send(verb, url, options)
       responses << response
       response_info = {
         response_body: last_body,
@@ -80,11 +75,11 @@ module Specr
     end
 
     def post_multipart(endpoint, file, field, _body, opts = {})
-      file_name = File.join('fixtures', 'files', file)
-      options = opts.merge!(multipart: true,
-                            file: File.new(file_name),
-                            field: field)
-      request(:post, endpoint, options)
+      multipart_for(:post, endpoint, file, field, opts)
+    end
+
+    def patch_multipart(endpoint, file, field, _body, opts = {})
+      multipart_for(:patch, endpoint, file, field, opts)
     end
 
     def put(endpoint, body, opts = {})
@@ -143,6 +138,16 @@ module Specr
       else
         last_body.select { |x| x != 'links' && x != 'meta' }.values.first[name]
       end
+    end
+
+    private
+
+    def multipart_for(verb, endpoint, file, field, opts)
+      file_name = File.join('fixtures', 'files', file)
+      options = opts.merge!(multipart: true,
+                            file: File.new(file_name),
+                            field: field)
+      request(verb, endpoint, options)
     end
   end
 end
