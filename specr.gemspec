@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'httparty', '~> 0.18.0'
   spec.add_dependency 'json-schema', '~> 2.6'
   spec.add_dependency 'test-unit'
-  spec.add_dependency 'rake', '~> 10.0'
+  spec.add_dependency 'rake', '>= 10', '< 14'
 
   spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'pry-byebug'
